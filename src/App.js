@@ -61,25 +61,27 @@ class App extends Component {
     super(); //I don't know what this is.
     this.state = {
       input: '',
+      imageUrl: ''
     }
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
+    this.setState({input: event.target.value});
   }
   
   onButtonSubmit = () => {
-    console.log('click');
-    app.models.predict( //Start of code snippet#1 from Clarifai
-      "a403429f2ddf4b49b307e318f00e528b", 
-      "https://samples.clarifai.com/face-det.jpg")
+    this.setState({imageUrl: this.state.input});
+    app.models //Start of code snippet#1 from Clarifai
+      .predict(
+        Clarifai.FACE_DETECT_MODEL,
+        this.state.input)
       .then(
-      function(response) {
-        console.log(response);
-      },
-      function(err) {
-        // there was an error
-      }
+        function(response) {
+          console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
+        },
+        function(err) {
+          // there was an error
+        }
     );//End of code snippet#1 from my Clarifai
   }
 
@@ -96,7 +98,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         /> {/* If we don't use () after onInputChange, the function is passed as a prop, but is not called. */}
-        <FaceRecognition />
+        <FaceRecognition imageUrl={this.state.imageUrl}/>
       </div>
     );
   }
