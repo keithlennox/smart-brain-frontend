@@ -27,7 +27,7 @@ QUESTIONS:
 - Why does Andaei sometimes use separate css style sheet and sometimes use tachyons?
 - My input field is much wider than Andrei's. No idea why.
 - Inide the class component, I don't understand the use of constructor() and super().
-  }
+- Why do we have to use "this"?
 */
 
 import React, { Component } from 'react';
@@ -42,7 +42,7 @@ import './App.css';
 
 const app = new Clarifai.App({ //Start of code snippet#1 from Clarifai
   apiKey: '52215e2d0e7d4c5fb5e0cb1486a66add'
- }); //End of code snippet#1 from Clarifai
+}); //End of code snippet#1 from Clarifai
 
 const particlesOptions = {
   particles: {
@@ -61,29 +61,28 @@ class App extends Component {
     super(); //I don't know what this is.
     this.state = {
       input: '',
-      imageUrl: ''
+      imageUrl: '',
+      box: {}
     }
   }
 
+  calculateFaceLocation = (data) => {
+    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+  }
+
   onInputChange = (event) => {
-    this.setState({input: event.target.value});
+    this.setState({input: event.target.value}); //We pull the URL to the photo from our input field.
   }
   
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input});
+    this.setState({imageUrl: this.state.input}); //Andrei says it's best to grab the final result of the input field and put that in a var, rather than use the input var, which is updated with each keystroke.
     app.models //Start of code snippet#1 from Clarifai
-      .predict(
+      .predict( //.predict() returns a promise.
         Clarifai.FACE_DETECT_MODEL,
-        this.state.input)
-      .then(
-        function(response) {
-          console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
-        },
-        function(err) {
-          // there was an error
-        }
-    );//End of code snippet#1 from my Clarifai
-  }
+        this.state.input) // The input var contains the URL to our photo. Why don't we use imageUrl? See commments at bottom of page...
+      .then(response => this.calculateFaceLocation(response))                           // then() waits for the promise to resolve.
+      .catch(err => console.log(err));
+  }//End of code snippet#1 from my Clarifai
 
   render() {
     return (
@@ -105,3 +104,14 @@ class App extends Component {
 }
 
 export default App;
+
+/*
+Explanation of why we don't pass the imageUrl var to the Clarifai API call.
+Calling setState() in React is asynchronous, for various reasons (mainly performance).
+Under the covers React will batch multiple calls to setState() into a single call, 
+and then re-render the component a single time, rather than re-rendering for every state change.
+Therefore the imageUrl parameter would have never worked in our example, 
+because when we called Clarifai with our the predict function, React wasn't finished updating the state. 
+One way to go around this issue is to use a callback function: setState(updater, callback).
+Read about it more here: https://reactjs.org/docs/react-component.html#setstate
+*/
