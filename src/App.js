@@ -28,6 +28,9 @@ QUESTIONS:
 - My input field is much wider than Andrei's. No idea why.
 - Inide the class component, I don't understand the use of constructor() and super().
 - Why do we have to use "this"?
+
+https://static.euronews.com/articles/stories/04/22/47/40/945x531_cmsv2_b5eeef82-3b6a-5879-b47f-8699155ff7a9-4224740.jpg
+
 */
 
 import React, { Component } from 'react';
@@ -68,6 +71,19 @@ class App extends Component {
 
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputimage');
+    const height = Number(image.height);
+    const width = Number(image.width);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height)
+    }
+  }
+
+  displayFaceBox = (box) => {
+    this.setState({box: box});
   }
 
   onInputChange = (event) => {
@@ -80,7 +96,7 @@ class App extends Component {
       .predict( //.predict() returns a promise.
         Clarifai.FACE_DETECT_MODEL,
         this.state.input) // The input var contains the URL to our photo. Why don't we use imageUrl? See commments at bottom of page...
-      .then(response => this.calculateFaceLocation(response))                           // then() waits for the promise to resolve.
+      .then(response => this.displayFaceBox(this.calculateFaceLocation(response))) // then() waits for the promise to resolve.
       .catch(err => console.log(err));
   }//End of code snippet#1 from my Clarifai
 
@@ -97,7 +113,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         /> {/* If we don't use () after onInputChange, the function is passed as a prop, but is not called. */}
-        <FaceRecognition imageUrl={this.state.imageUrl}/>
+        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
       </div>
     );
   }
