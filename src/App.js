@@ -36,8 +36,9 @@ https://static.euronews.com/articles/stories/04/22/47/40/945x531_cmsv2_b5eeef82-
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
-import Navigation from './components/Navigation/Navigation';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Navigation from './components/Navigation/Navigation';
+import Signin from './components/Signin/Signin';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
@@ -106,6 +107,7 @@ class App extends Component {
         <Particles className='particles'
           params={particlesOptions}
         />
+        <Signin />
         <Navigation />
         <Logo />
         <Rank />
