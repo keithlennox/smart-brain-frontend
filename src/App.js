@@ -26,7 +26,7 @@ QUESTIONS:
 - Not sure why Andaei likes to put JSX text nodes in curly braces. It still works without.
 - Why does Andaei sometimes use separate css style sheet and sometimes use tachyons?
 - My input field is much wider than Andrei's. No idea why.
-- Inide the class component, I don't understand the use of constructor() and super().
+- Inside the class component, I don't understand the use of constructor() and super().
 - Why do we have to use "this"?
 
 https://static.euronews.com/articles/stories/04/22/47/40/945x531_cmsv2_b5eeef82-3b6a-5879-b47f-8699155ff7a9-4224740.jpg
@@ -39,6 +39,7 @@ import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
 import Signin from './components/Signin/Signin';
+import Register from './components/Register/Register';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
@@ -66,7 +67,9 @@ class App extends Component {
     this.state = {
       input: '',
       imageUrl: '',
-      box: {}
+      box: {},
+      route: 'signin',
+      isSignedIn: false
     }
   }
 
@@ -101,23 +104,41 @@ class App extends Component {
       .catch(err => console.log(err));
   }//End of code snippet#1 from my Clarifai
 
+  onRouteChange = (route) => {
+    if(route === 'signout') {
+      this.setState({isSignedIn: false})
+    }else if(route === 'home') {
+      this.setState({isSignedIn: true})
+    }
+    this.setState({route: route});
+  }
+
   render() {
+    const { isSignedIn, imageUrl, route, box } = this.state;
     return (
       <div className="App">
-        <Particles className='particles'
-          params={particlesOptions}
-        />
-        <Signin />
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm 
-          onInputChange={this.onInputChange}
-          onButtonSubmit={this.onButtonSubmit}
-        /> {/* If we don't use () after onInputChange, the function is passed as a prop, but is not called. */}
-        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
+        <Particles className='particles' params={particlesOptions} />
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+        { route === 'home' 
+          ? <div>
+              <Logo />
+              <Rank />
+              <ImageLinkForm 
+                onInputChange={this.onInputChange}
+                onButtonSubmit={this.onButtonSubmit}
+              /> {/* If we don't use () after onInputChange, the function is passed as a prop, but is not called. */}
+              <FaceRecognition box={box} imageUrl={imageUrl}/>
+            </div>
+          : (
+              route === 'signin'
+              ? <Signin onRouteChange={this.onRouteChange} />
+              : <Register onRouteChange={this.onRouteChange} />
+          )
+        }
+
       </div>
     );
+
   }
 }
 
