@@ -35,7 +35,6 @@ https://static.euronews.com/articles/stories/04/22/47/40/945x531_cmsv2_b5eeef82-
 
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
 import Signin from './components/Signin/Signin';
@@ -44,10 +43,6 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import './App.css';
-
-const app = new Clarifai.App({ //Start of code snippet#1 from Clarifai
-  apiKey: '52215e2d0e7d4c5fb5e0cb1486a66add'
-}); //End of code snippet#1 from Clarifai
 
 const particlesOptions = {
   particles: {
@@ -61,35 +56,28 @@ const particlesOptions = {
   }
 }
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 class App extends Component {
   constructor() { //I don't know what this is.
     super(); //I don't know what this is.
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
   loadUser = (data) => {
-
-    console.log(data);////////////////////////////////////////
-    console.log(data.id);////////////////////////////////////////
-    console.log(data.name);////////////////////////////////////////
-    console.log(data.password);////////////////////////////////////////
-    console.log(data.email);////////////////////////////////////////
-    console.log(data.entries);////////////////////////////////////////
-    console.log(data.joined);////////////////////////////////////////
-
     this.setState({user: {
       id: data.id,
       name: data.name,
@@ -120,34 +108,40 @@ class App extends Component {
     this.setState({input: event.target.value}); //We pull the URL to the photo from our input field.
   }
   
+  // The input var contains the URL to our photo. Why don't we use imageUrl? See commments at bottom of page...
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input}); //Andrei says it's best to grab the final result of the input field and put that in a var, rather than use the input var, which is updated with each keystroke.
-    app.models //Start of code snippet#1 from Clarifai
-      .predict( //.predict() returns a promise.
-        Clarifai.FACE_DETECT_MODEL,
-        this.state.input) // The input var contains the URL to our photo. Why don't we use imageUrl? See commments at bottom of page...
-      .then(response => {
-        if(response) {
-          fetch('http://localhost:3001/image', {
-              method: 'put',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({
-                id: this.state.user.id
-              })
-          })
-          .then(response => response.json())
-          .then(count => {
-            this.setState(Object.assign(this.state.user, { entries: count}))
-          })
-        }
-        this.displayFaceBox(this.calculateFaceLocation(response))
+    fetch('http://localhost:3001/imageurl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
       })
-      .catch(err => console.log(err));
-  }//End of code snippet#1 from my Clarifai
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response) {
+        fetch('http://localhost:3001/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: this.state.user.id
+            })
+        })
+        .then(response => response.json())
+        .then(count => {
+          this.setState(Object.assign(this.state.user, { entries: count}))
+        })
+        .catch(console.log);
+      }
+      this.displayFaceBox(this.calculateFaceLocation(response))
+    })
+    .catch(err => console.log(err));
+  }
 
   onRouteChange = (route) => {
     if(route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     }else if(route === 'home') {
       this.setState({isSignedIn: true})
     }

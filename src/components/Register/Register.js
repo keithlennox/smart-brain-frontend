@@ -1,3 +1,13 @@
+/*
+Name: Giligan
+Email: giligan@gmail.com
+Password: minnow
+
+Name: Skipper
+Email: skipper@gmail.com
+Password: island
+*/
+
 import React from 'react';
 
 class Register extends React.Component {
@@ -35,7 +45,7 @@ class Register extends React.Component {
     })
     .then(res => res.json())
     .then(user => {
-      if (user){
+      if (user.id){
         this.props.loadUser(user);
         this.props.onRouteChange('home');
       }
