@@ -1,5 +1,15 @@
 Created for Udemy course: "The Complete Web Developer 2020" w/ Andrei Neagoie.
 
+The following stack is used:
+
+Frontend: React
+Backend: node.js and express
+State management: class components
+DB: PostgreSQL
+Connect backend to db: Kinex
+Connect backend to frontend: Fetch
+
+
 The following SQL commands were entered in the psql command line to create the database required for this application:
 
 CREATE DATABASE smartbrain;  
