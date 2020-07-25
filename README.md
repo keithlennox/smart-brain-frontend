@@ -8,7 +8,7 @@ State management: class components
 DB: PostgreSQL  
 Connect backend to db: Kinex  
 Connect backend to frontend: Fetch  
-
+Navigation: conditional rendering  
 
 The following SQL commands were entered in the psql command line to create the database required for this application:  
 
