@@ -1,8 +1,9 @@
-# Created for Udemy course:  
+Created for Udemy course:  
 "The Complete Web Developer 2020" w/ Andrei Neagoie.  
 
 ## The following stack is used:  
 
+### Frontend
 Frontend: React  
 Backend: node.js  
 Web server: express  
