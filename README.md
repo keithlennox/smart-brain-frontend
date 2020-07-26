@@ -4,14 +4,18 @@ Created for Udemy course:
 ## The following stack is used:  
 
 ### Frontend
-Frontend: React  
+React  
+State management: class components  
+Navigation: conditional rendering
+Connect to backend: Fetch 
+
+### Backend
 Backend: node.js  
 Web server: express  
-State management: class components  
-DB: PostgreSQL  
-Connect backend to db: Kinex  
-Connect backend to frontend: Fetch  
-Navigation: conditional rendering  
+Connect backend to db: Kinex
+
+### Database
+PostgreSQL  
 
 The following SQL commands were entered in the psql command line to create the database required for this application:  
 
