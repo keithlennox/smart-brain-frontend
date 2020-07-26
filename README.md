@@ -1,4 +1,5 @@
-# Created for Udemy course: "The Complete Web Developer 2020" w/ Andrei Neagoie.  
+# Created for Udemy course:  
+"The Complete Web Developer 2020" w/ Andrei Neagoie.  
 
 ## The following stack is used:  
 
