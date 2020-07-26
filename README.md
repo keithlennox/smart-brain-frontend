@@ -3,7 +3,8 @@ Created for Udemy course: "The Complete Web Developer 2020" w/ Andrei Neagoie.
 The following stack is used:  
 
 Frontend: React  
-Backend: node.js and express  
+Backend: node.js  
+Web server: express  
 State management: class components  
 DB: PostgreSQL  
 Connect backend to db: Kinex  
