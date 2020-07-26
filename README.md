@@ -1,20 +1,18 @@
 Created for Udemy course:  
 "The Complete Web Developer 2020" w/ Andrei Neagoie.  
 
-## The following stack is used:  
-
-### Frontend
+## Frontend
 React  
 State management: class components  
 Navigation: conditional rendering
 Connect to backend: Fetch 
 
-### Backend
+## Backend
 Backend: node.js  
 Web server: express  
 Connect backend to db: Kinex
 
-### Database
+## Database
 PostgreSQL  
 
 The following SQL commands were entered in the psql command line to create the database required for this application:  
