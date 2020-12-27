@@ -3,10 +3,13 @@
 Created for Udemy course:  
 "The Complete Web Developer 2020" w/ Andrei Neagoie.  
 
+To run this app you will need to create an account at www.clarifai.com  
+and generate an API key.  Paste the key into the backend image.js file.
+
 ## Frontend
 React  
 State management: class components  
-Navigation: conditional rendering
+Navigation: conditional rendering  
 Connect to backend: Fetch 
 
 ## Backend
