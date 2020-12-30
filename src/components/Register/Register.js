@@ -1,13 +1,3 @@
-/*
-Name: Giligan
-Email: giligan@gmail.com
-Password: minnow
-
-Name: Skipper
-Email: skipper@gmail.com
-Password: island
-*/
-
 import React from 'react';
 
 class Register extends React.Component {
