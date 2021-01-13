@@ -37,8 +37,8 @@ const initialState = {
 }
 
 class App extends Component {
-  constructor() { //I don't know what this is.
-    super(); //I don't know what this is.
+  constructor() {
+    super();
     this.state = initialState;
   }
 
@@ -76,7 +76,7 @@ class App extends Component {
   // The input var contains the URL to our photo. Why don't we use imageUrl? See commments at bottom of page...
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input}); //Andrei says it's best to grab the final result of the input field and put that in a var, rather than use the input var, which is updated with each keystroke.
-    fetch('http://localhost:3001/imageurl', {
+    fetch('https://nameless-fortress-41224.herokuapp.com/imageurl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -86,7 +86,7 @@ class App extends Component {
     .then(response => response.json())
     .then(response => {
       if(response) {
-        fetch('http://localhost:3001/image', {
+        fetch('https://nameless-fortress-41224.herokuapp.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
